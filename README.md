@@ -55,6 +55,10 @@ test.xxx.com 	 [103.x.x.x]
 211.x.x.0/24 || 1
 123.x.x.0/24 || 1
 ```
+或者
+```
+admin@admin cIPR % go run cIPR.go -t 20 domain.txt
+```
 
 ## config.yml
 
@@ -76,6 +80,10 @@ blackList:              #ip段黑名单
 ```
 
 该黑名单屏蔽了cnd和一些云服务器，使用时可以自行调节设置。
+
+## Changelog
+
+[+] 2021/09/08 增加并发选项。但实际速度还取决于dns服务器等解析速度。
 
 ## Thanks
 
