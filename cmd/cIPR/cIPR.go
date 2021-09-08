@@ -7,20 +7,30 @@ import (
 	"net"
 	"sort"
 	"strings"
+	"sync"
 )
 
 
 func main() {
 	options := app.ParseOptions()
 	scanner := tools.FileScaner(options.InputFile)
+	ch := make(chan struct{}, options.GoroutineNum)
 	var (
 		ipRecords []net.IP
+		wg  sync.WaitGroup
 	)
 	for scanner.Scan() {
 		domain := strings.TrimSpace(scanner.Text())
-		ipRecord, _ :=net.LookupIP(domain)
-		fmt.Println(domain,"\t",ipRecord)
-		ipRecords = append(ipRecords,ipRecord...)
+		ch <- struct{}{}
+		wg.Add(1)
+		go func() {
+			ipRecord, _ :=net.LookupIP(domain)
+			fmt.Println(domain,"\t",ipRecord)
+			ipRecords = append(ipRecords,ipRecord...)
+			<-ch
+			wg.Done()
+		}()
+		wg.Wait()
 	}
 	ips := tools.RemoveDuplicateIP(ipRecords)
 

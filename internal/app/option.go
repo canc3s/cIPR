@@ -6,6 +6,7 @@ import (
 	"github.com/canc3s/cIPR/internal/tools"
 	"github.com/canc3s/cIPR/pkg/qqwry"
 	"log"
+	"os"
 )
 
 const banner = `
@@ -21,17 +22,19 @@ const banner = `
 											v`
 
 // Version is the current version of C
-const Version = `0.0.1`
+const Version = `0.0.2`
 
 type Options struct {
 	BlackList			[]string
 	DatPath				string                 // Target is a single URL/Domain to scan usng a template
 	InputFile			string                 // Targets specifies the targets to scan using templates.
+	GoroutineNum		int
 	Silent				bool
 }
 
 func ParseOptions() *Options {
 	options := &Options{}
+	flag.IntVar(&options.GoroutineNum, "t", 10, "并发数量")
 	showBanner()
 	flag.Parse()
 
@@ -49,10 +52,12 @@ func (options *Options) validateOptions() {
 		qqwry.Download(options.DatPath)
 	}
 	if options.InputFile == "" {
-		log.Fatalf("用法:\t./cIPR domain.txt\n\n")
+		log.Fatalf("用法:\n./cIPR domain.txt\n./cIPR -t 20 domain.txt\n默认并发10\n\n")
+		os.Exit(0)
 	}
 	if options.InputFile != "" && !tools.FileExists(options.InputFile) {
 		log.Fatalf("文件 %s 不存在!\n", options.InputFile)
+		os.Exit(0)
 	}
 }
 
