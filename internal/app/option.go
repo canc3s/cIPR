@@ -22,14 +22,13 @@ const banner = `
 											v`
 
 // Version is the current version of C
-const Version = `0.0.2`
+const Version = `0.0.3`
 
 type Options struct {
 	BlackList			[]string
 	DatPath				string                 // Target is a single URL/Domain to scan usng a template
 	InputFile			string                 // Targets specifies the targets to scan using templates.
 	GoroutineNum		int
-	Silent				bool
 }
 
 func ParseOptions() *Options {

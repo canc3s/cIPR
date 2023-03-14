@@ -5,18 +5,25 @@ import (
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
+	"os"
 )
 
-const (
-	ConfigFile = "./config.yml"
-)
+var ConfigFile string
 
 type Config struct {
 	DatPath		string				`yaml:"datPath"`
 	BlackList	[]string			`yaml:"blackList"`
 }
 
+func init()  {
+	ConfigFile = os.Getenv("CIPR_Conf")
+}
+
 func InitConf(option *Options) {
+	if ConfigFile == "" {
+		log.Println("未检测到环境变量 CIPR_Conf，默认读取./config.yml")
+		ConfigFile = "./config.yml"
+	}
 	if !tools.FileExists(ConfigFile) {
 		DefaultConf()
 	}
