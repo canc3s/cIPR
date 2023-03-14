@@ -83,6 +83,8 @@ blackList:              #ip段黑名单
 
 ## Changelog
 
+[+] 2023/03/14 增加利用环境变量 `CIPR_Conf` 设置配置文件路径功能。(详情见https://github.com/canc3s/cIPR/issues/1)
+
 [+] 2021/09/08 增加并发选项。但实际速度还取决于dns服务器等解析速度。
 
 ## Thanks
